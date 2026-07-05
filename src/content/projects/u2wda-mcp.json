@@ -1,0 +1,13 @@
+{
+  "title": "u2wda-mcp",
+  "description": "让非视觉 AI 也拥有操作手机 UI 的能力。基于纯 DOM 结构树进行高精度解析，彻底告别脆弱、延迟高且高成本的计算机视觉（CV）屏幕定位。",
+  "url": "https://github.com/ByteTrue/u2wda-mcp",
+  "techStack": ["TypeScript", "Android", "MCP"],
+  "specs": {
+    "METHOD": "DOM-BASED",
+    "PLATFORM": "ANDROID",
+    "INTEGRATION": "MCP SERVER",
+    "CORE LANG": "TYPESCRIPT"
+  },
+  "sortOrder": 1
+}

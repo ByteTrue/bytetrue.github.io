@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Get all posts and sort by date desc
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="THE MAGAZINE // BYTE TRUE" activePath="/blog">
+  <section class="py-16 md:py-24 bg-canvas min-h-[80vh]">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+      <!-- Page Header -->
+      <div class="border-b border-hairline pb-10 mb-16">
+        <span class="text-xs font-bold tracking-[2px] text-m-red font-display">// JOURNAL & INSIGHTS</span>
+        <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white mt-3 uppercase font-display">
+          THE MAGAZINE
+        </h1>
+        <p class="text-base text-muted font-body mt-4 max-w-xl font-light">
+          Deep-dives into technology democratization, minimal tool engineering, and architecture philosophy.
+        </p>
+      </div>
+
+      <!-- Articles Grid -->
+      {posts.length === 0 ? (
+        <div class="border border-dashed border-hairline p-16 text-center">
+          <p class="text-sm text-muted font-body mb-4">THE ARCHIVE IS CURRENTLY EMPTY.</p>
+          <span class="inline-block h-1 w-12 bg-m-red"></span>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <a 
+              href={`/blog/${post.id}`}
+              class="bg-canvas border border-hairline hover:border-white p-6 md:p-8 flex flex-col justify-between group transition-colors duration-300"
+            >
+              <div>
+                <!-- Category/Date -->
+                <div class="flex items-center gap-2 mb-6">
+                  <span class="text-[11px] font-bold tracking-[1.5px] text-m-red font-display uppercase">
+                    // ESSAY
+                  </span>
+                  <span class="text-xs text-muted font-display">—</span>
+                  <span class="text-[11px] font-display text-muted">
+                    {post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                  </span>
+                </div>
+
+                <h2 class="text-xl font-bold tracking-tight text-white uppercase font-display mb-4 line-clamp-2">
+                  {post.data.title}
+                </h2>
+                
+                <p class="text-sm font-light text-body-text font-body leading-relaxed line-clamp-3 mb-8">
+                  {post.data.description}
+                </p>
+              </div>
+
+              <span class="text-xs font-bold tracking-[1.5px] text-white group-hover:text-m-red transition-colors font-display flex items-center gap-2">
+                READ FULL ARTICLE <span class="text-m-red group-hover:translate-x-1 transition-transform duration-200">→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

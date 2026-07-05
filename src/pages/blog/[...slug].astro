@@ -1,0 +1,50 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={`${post.data.title} // BYTE TRUE`} activePath="/blog">
+  <article class="py-16 md:py-24 bg-canvas min-h-[90vh]">
+    <div class="max-w-[800px] mx-auto px-6">
+      <!-- Breadcrumbs -->
+      <a href="/blog" class="text-xs font-bold tracking-[1.5px] text-muted hover:text-white transition-colors font-display">
+        ← BACK TO THE MAGAZINE
+      </a>
+      
+      <!-- Post Header -->
+      <div class="mt-8 border-b border-hairline pb-8 mb-12">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-[11px] font-bold tracking-[1.5px] text-m-red font-display">
+            // ESSAY
+          </span>
+          <span class="text-xs text-muted font-display">—</span>
+          <span class="text-[11px] font-display text-muted">
+            {post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+          </span>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white leading-tight uppercase font-display">
+          {post.data.title}
+        </h1>
+        <p class="text-lg text-body-strong font-body font-light mt-4 italic leading-relaxed">
+          {post.data.description}
+        </p>
+      </div>
+
+      <!-- Article Content (styled with custom .article-content styles) -->
+      <div class="article-content">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Layout>

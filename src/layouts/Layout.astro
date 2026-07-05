@@ -1,0 +1,40 @@
+---
+// Layout.astro
+// Global layout providing HTML structure, fonts, navigation, footer and M-design styling.
+import '../styles/global.css';
+import TopNav from '../components/TopNav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activePath?: string;
+}
+
+const { 
+  title = 'BYTE TRUE // Tech Democratization', 
+  description = 'Lowering the barriers of complex, high-ceiling innovations so that they become accessible, stable, and practical for everyone.',
+  activePath = ''
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="bg-canvas text-body-text font-body antialiased selection:bg-m-red selection:text-white flex flex-col min-h-screen">
+    <TopNav activePath={activePath} />
+    
+    <main class="flex-grow">
+      <slot />
+    </main>
+    
+    <Footer />
+  </body>
+</html>

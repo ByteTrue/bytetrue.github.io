@@ -1,0 +1,14 @@
+---
+// MStripeDivider.astro
+// The iconic 4px M tricolor stripe (light blue -> dark blue -> red)
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div 
+  class={`h-1 w-full shrink-0 ${className}`} 
+  style="background: linear-gradient(to right, var(--color-m-blue-light) 33.33%, var(--color-m-blue-dark) 33.33% 66.66%, var(--color-m-red) 66.66%);"
+></div>

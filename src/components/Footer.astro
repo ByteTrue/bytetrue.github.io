@@ -1,0 +1,27 @@
+---
+// Footer.astro
+// Clean, low-contrast footer carrying copyright, philosophy and brand signature.
+---
+
+<footer class="bg-canvas border-t border-hairline py-12 md:py-16">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-3">
+        <span class="font-display text-sm font-bold tracking-[1.5px] text-white">
+          BYTE TRUE
+        </span>
+        <span class="text-xs text-muted font-display tracking-[0.5px]">
+          // TECH DEMOCRATIZATION
+        </span>
+      </div>
+      <p class="text-sm text-muted font-body max-w-md">
+        Lowering the barriers of complex, high-ceiling innovations so that they become accessible, stable, and practical for everyone.
+      </p>
+    </div>
+    
+    <div class="flex flex-col md:items-end gap-2 text-xs font-display tracking-[0.5px] text-muted">
+      <span>© {new Date().getFullYear()} BYTE TRUE. ALL RIGHTS RESERVED.</span>
+      <span>BUILT WITH ASTRO + TAILWIND CSS</span>
+    </div>
+  </div>
+</footer>

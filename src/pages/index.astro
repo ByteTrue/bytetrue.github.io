@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MStripeDivider from '../components/MStripeDivider.astro';
+import { getCollection } from 'astro:content';
+
+// Get and sort blog posts by pubDate desc
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+// Get and sort projects by sortOrder asc
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => (a.data.sortOrder ?? 99) - (b.data.sortOrder ?? 99));
+
+// Curated dark tech photography for fallback
+const heroImage = "https://images.unsplash.com/photo-1510519138101-570d1dca3d66?auto=format&fit=crop&w=1600&q=80"; // Sleek dark code workspace
+const projectDefaultImage = "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80"; // Macro code/DOM structure
+---
+
+<Layout activePath="/">
+  <!-- HERO PHOTO BAND -->
+  <section class="relative w-full min-h-[70vh] md:min-h-[80vh] flex items-center bg-black overflow-hidden py-16 md:py-24">
+    <!-- Full-bleed background image with dark overlay to match canvas floor -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src={heroImage} 
+        alt="Sleek Dark Tech Canvas" 
+        class="w-full h-full object-cover opacity-35 filter desaturate"
+      />
+      <!-- Bottom-fade to transition seamlessly into black canvas -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-[1440px] w-full mx-auto px-6 md:px-12 flex flex-col items-start">
+      <!-- Engine Tuning Style Category Indicator -->
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-xs md:text-sm font-bold tracking-[2px] text-m-blue-light font-display">ENGINE: ACTIVE</span>
+        <span class="text-xs md:text-sm font-bold text-muted font-display">//</span>
+        <span class="text-xs md:text-sm font-bold tracking-[2px] text-white font-display">LANGS: TS // PY // GO</span>
+      </div>
+
+      <!-- Main Headline: BMW-style uppercase heavy display -->
+      <h1 class="text-5xl md:text-8xl font-black tracking-[-1px] leading-[0.95] text-white max-w-5xl mb-6">
+        BYTE TRUE
+      </h1>
+
+      <!-- Sub-headline: Medium text, light weight, highly readable -->
+      <p class="text-xl md:text-2xl font-light text-body-strong leading-relaxed max-w-3xl mb-10 font-body">
+        DEMOCRATIZING GENIUS INNOVATION.<br class="hidden md:inline" />
+        PRECISION ENGINE-TUNED UTILITIES FOR EVERYONE.
+      </p>
+
+      <!-- Primary Outline Button: Industrial precision rectangular silhouette -->
+      <a 
+        href="#projects" 
+        class="border border-white hover:bg-white hover:text-black transition-colors duration-300 px-8 py-4 text-xs font-bold tracking-[2.5px] font-display rounded-none"
+      >
+        EXPLORE INSTRUMENTS
+      </a>
+    </div>
+  </section>
+
+  <!-- THE M SIGNATURE STRIPE -->
+  <MStripeDivider />
+
+  <!-- CORE PHILOSOPHY / ABOUT SECTION -->
+  <section class="bg-canvas py-24 border-b border-hairline">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+      <div class="lg:col-span-4">
+        <h2 class="text-xs font-bold tracking-[2px] text-muted font-display mb-3">// THE PHILOSOPHY</h2>
+        <h3 class="text-3xl md:text-4xl font-bold tracking-tight text-white leading-none">
+          科技平权
+        </h3>
+      </div>
+      <div class="lg:col-span-8 flex flex-col gap-6 text-base md:text-lg text-body-text font-body font-light leading-relaxed">
+        <p>
+          世界上不缺少令人惊叹的天才创新，但许多改变游戏规则的技术往往因为极高的心智门槛和繁琐的配置被束之高阁，沦为少数极客的专享玩具。
+        </p>
+        <p>
+          <strong class="text-body-strong font-normal">Byte True</strong> 的定位是“高精度改装师”。我专注于用 TypeScript, Python 和 Go 编写极简、稳定且直达痛点的工具与中间件，将复杂的登月科技封装进人人可上手的简单手柄中。
+        </p>
+        <p class="border-l-2 border-m-red pl-6 py-1 my-2 text-white font-normal italic bg-surface-soft">
+          “最好的工程不只是创造高度，更是降低门槛。”
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTED PROJECTS SECTION -->
+  <section id="projects" class="bg-canvas py-24 border-b border-hairline scroll-mt-16">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div>
+          <h2 class="text-xs font-bold tracking-[2px] text-muted font-display mb-3">// WORKBENCH</h2>
+          <h3 class="text-4xl md:text-5xl font-black tracking-tight text-white">
+            SELECTED PROJECTS
+          </h3>
+        </div>
+        <span class="text-xs font-display tracking-[1.5px] text-muted">
+          FILTER: ALL MODELS ({sortedProjects.length})
+        </span>
+      </div>
+
+      {sortedProjects.length === 0 ? (
+        /* FALLBACK EMPTY STATE */
+        <div class="border border-dashed border-hairline p-16 text-center">
+          <p class="text-sm text-muted font-body mb-4">NO PROJECTS DEPLOYED TO WORKBENCH YET.</p>
+          <span class="inline-block h-1 w-12 bg-m-red"></span>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {sortedProjects.map((project) => (
+            <div class="flex flex-col bg-canvas group border border-hairline hover:border-white transition-colors duration-300">
+              <!-- Aspect-ratio controlled cover photo -->
+              <div class="w-full aspect-[16/10] overflow-hidden bg-surface-soft border-b border-hairline">
+                <img 
+                  src={projectDefaultImage} 
+                  alt={project.data.title}
+                  class="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-90 transition-all duration-500 scale-100 group-hover:scale-105"
+                />
+              </div>
+
+              <!-- Content Area -->
+              <div class="p-6 flex flex-col flex-grow">
+                <h4 class="text-2xl font-black tracking-tight text-white mb-3 uppercase font-display">
+                  {project.data.title}
+                </h4>
+                <p class="text-sm font-light text-body-text leading-relaxed mb-6 font-body flex-grow">
+                  {project.data.description}
+                </p>
+
+                <!-- Technical Spec Cells: Grid structure styled as motorsport-spec -->
+                {project.data.specs && (
+                  <div class="grid grid-cols-2 gap-[1px] bg-hairline mb-8 border border-hairline">
+                    {Object.entries(project.data.specs).map(([key, val]) => (
+                      <div class="bg-surface-soft p-4 flex flex-col justify-between">
+                        <span class="text-xs font-bold tracking-[1.5px] text-muted font-display uppercase">{key}</span>
+                        <span class="text-sm font-bold text-white font-display mt-2 uppercase">{val}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {project.data.url && (
+                  <a 
+                    href={project.data.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="mt-auto inline-flex items-center gap-2 text-xs font-bold tracking-[2px] text-white hover:text-m-red transition-colors font-display"
+                  >
+                    VIEW ON GITHUB <span class="text-m-red">→</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- MAGAZINE / RECENT ESSAYS -->
+  <section class="bg-canvas py-24">
+    <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div>
+          <h2 class="text-xs font-bold tracking-[2px] text-muted font-display mb-3">// JOURNAL & INSIGHTS</h2>
+          <h3 class="text-4xl md:text-5xl font-black tracking-tight text-white">
+            THE MAGAZINE
+          </h3>
+        </div>
+        <a 
+          href="/blog" 
+          class="text-xs font-bold tracking-[1.5px] text-white hover:text-m-blue-light transition-colors font-display"
+        >
+          VIEW ALL ARTICLES →
+        </a>
+      </div>
+
+      {recentPosts.length === 0 ? (
+        /* FALLBACK EMPTY STATE */
+        <div class="border border-dashed border-hairline p-16 text-center">
+          <p class="text-sm text-muted font-body mb-4">NO ARTICLES PUBLISHED TO THE MAGAZINE YET.</p>
+          <span class="inline-block h-1 w-12 bg-m-blue-dark"></span>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {recentPosts.map((post) => (
+            <a 
+              href={`/blog/${post.id}`}
+              class="bg-canvas border border-hairline hover:border-white p-6 md:p-8 flex flex-col justify-between group transition-colors duration-300"
+            >
+              <div>
+                <!-- Category Tab styled indicator -->
+                <div class="flex items-center gap-2 mb-6">
+                  <span class="text-[11px] font-bold tracking-[1.5px] text-m-red font-display uppercase">
+                    // ESSAY
+                  </span>
+                  <span class="text-xs text-muted font-display">—</span>
+                  <span class="text-[11px] font-display text-muted">
+                    {post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                  </span>
+                </div>
+
+                <h4 class="text-xl font-bold tracking-tight text-white group-hover:text-white transition-colors uppercase font-display mb-4 line-clamp-2">
+                  {post.data.title}
+                </h4>
+                
+                <p class="text-sm font-light text-body-text font-body leading-relaxed line-clamp-3 mb-8">
+                  {post.data.description}
+                </p>
+              </div>
+
+              <span class="text-xs font-bold tracking-[1.5px] text-white group-hover:text-m-red transition-colors font-display flex items-center gap-2">
+                READ FULL ARTICLE <span class="text-m-red group-hover:translate-x-1 transition-transform duration-200">→</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
